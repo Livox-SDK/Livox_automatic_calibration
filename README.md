@@ -79,5 +79,5 @@ You can get support from Livox with the following methods:
 * Send email to dev@livoxtech.com with a clear description of your problem and your setup
 * Github Issues
 
-**Develper: [Livox](https://www.livoxtech.com/)**
+**Developer: [Livox](https://www.livoxtech.com/)**
 
