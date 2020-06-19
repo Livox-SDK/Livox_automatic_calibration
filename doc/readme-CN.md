@@ -71,5 +71,5 @@ sh run.sh
 * 粗配准外参数矩阵不必要很精准，但需要大致能够对齐，尽可能保证最终的精度。  
 * 对于Mid-40, Horizon型号，转换的PCD文件参照100ms为一帧。  
 
-**Develper: [Livox](https://www.livoxtech.com/)**
+**Developer: [Livox](https://www.livoxtech.com/)**
 
