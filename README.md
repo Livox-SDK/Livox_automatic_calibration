@@ -67,11 +67,11 @@ The script first starts the visualize mapping program **mapping**，Use base LiD
 **Fig.2** Out put result of example data set
 
 ## **NOTE：**  
-1.Must ensure the data synchronization between sensors  
-2.Must ensure the precision of base LiDAR mapping result  
-3.The movement of the data collection vehicle or platform must be as slow as possible, and we recommended to correct the motion distortion between each frames  to ensure the final accuracy  
-4.The accurate initial external parameter matrix is not needed, but it should be roughly aligned to ensure the final accuracy as much as possible  
-5.For Mid-40, Horizon models, the converted PCD file refers to 100ms as one frame  
+* Must ensure the data synchronization between sensors  
+* Must ensure the precision of base LiDAR mapping result  
+* The movement of the data collection vehicle or platform must be as slow as possible, and we recommended to correct the motion distortion between each frames  to ensure the final accuracy  
+* The accurate initial external parameter matrix is not needed, but it should be roughly aligned to ensure the final accuracy as much as possible  
+* For Mid-40, Horizon models, the converted PCD file refers to 100ms as one frame  
 
 ## Support
 You can get support from Livox with the following methods:
