@@ -36,7 +36,7 @@ make
 
 
 ## 运行
-###　**1.准备双雷达标定pcd数据**　　
+### **1.准备双雷达标定pcd数据**　　
 
 * 基准雷达数据放在	data/Base_LiDAR_Frames/.pcd (以 100000.pcd 作为第一帧文件名，后续帧往上累加)  
 
@@ -50,7 +50,7 @@ make
  [**Target-LiDAR-Frames**](https://terra-1-g.djicdn.com/65c028cd298f4669a7f0e40e50ba1131/Showcase/Target-LiDAR-Frames.tar.gz)  
  [**Base_LiDAR_Frames**](https://terra-1-g.djicdn.com/65c028cd298f4669a7f0e40e50ba1131/Showcase/Base_LiDAR_Frames.tar.gz)  
 
-###　**2.运行**
+### **2.运行**
 ```
 cd livox_calibration
 cp run.sh build/
