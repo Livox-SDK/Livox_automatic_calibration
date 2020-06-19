@@ -1,7 +1,7 @@
-#Livox Automatic Calibration Tools v0.1　Quick Start Guide
+# Livox Automatic Calibration Tools v0.1　Quick Start Guide
 
 [中文文档](./doc/readme-CN.md)
-##Introduction
+## Introduction
 This tool provides an automatic calibration method for external parameters estimate between multiple Livox LiDARs. 
 
 ![image](./pic/1.png)  
@@ -37,8 +37,8 @@ This operation will generate three files, namely **mapping**, **calibration**, *
 
 
 
-##Run
-###**1. Prepare .pcd pointcloud data for calibration**　　
+## Run
+### **1. Prepare .pcd pointcloud data for calibration**　　
 
 * Put the base LiDAR data into: data/Base_LiDAR_Frames/.pcd (Use 100000.pcd as the first frame file name, and the subsequent frames are accumulated upward)  
 
@@ -53,7 +53,7 @@ This operation will generate three files, namely **mapping**, **calibration**, *
  [**Base_LiDAR_Frames**](https://terra-1-g.djicdn.com/65c028cd298f4669a7f0e40e50ba1131/Showcase/Base_LiDAR_Frames.tar.gz)  
 
 
-###**2. run**
+### **2. run**
 ```
 cd livox_calibration
 cp run.sh build/
@@ -66,14 +66,14 @@ The script first starts the visualize mapping program **mapping**，Use base LiD
 ![image](./pic/output.png ) 
 <center>**Fig.2** Out put result of example data set</center>
 
-##**NOTE：**  
+## **NOTE：**  
 1.Must ensure the data synchronization between sensors  
 2.Must ensure the precision of base LiDAR mapping result  
 3.The movement of the data collection vehicle or platform must be as slow as possible, and we recommended to correct the motion distortion between each frames  to ensure the final accuracy  
 4.The accurate initial external parameter matrix is not needed, but it should be roughly aligned to ensure the final accuracy as much as possible  
 5.For Mid-40, Horizon models, the converted PCD file refers to 100ms as one frame  
 
-##Support
+## Support
 You can get support from Livox with the following methods:
 
 * Send email to dev@livoxtech.com with a clear description of your problem and your setup
