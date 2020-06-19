@@ -64,7 +64,7 @@ sh run.sh
 The script first starts the visualize mapping program **mapping**，Use base LiDAR to build a submap. After that, the script starts **calibration** program to automatic calibration target LiDAR to base LiDAR，estimated the calibration parameters for each frames. Finally, the script launchs the Curve fitter **fitline**，to estimate the final parameter matrix.
 
 ![image](./pic/output.png ) 
-<center>**Fig.2** Out put result of example data set</center>
+**Fig.2** Out put result of example data set
 
 ## **NOTE：**  
 1.Must ensure the data synchronization between sensors  
