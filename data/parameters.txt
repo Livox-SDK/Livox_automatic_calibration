@@ -1,0 +1,102 @@
+
+fixed=world
+base=base
+odometry=odometry
+
+# Apply a voxel grid filter on incoming point clouds.
+grid_filter=1
+
+# Resolution of voxel grid filter.
+grid_res=0.2
+
+# Apply a random downsample filter on incoming point clouds.
+random_filter=0
+
+# Percentage of points to discard. Must be between 0.0 and 1.0.
+decimate_percentage=0.60 #0.9
+
+# Apply a statistical outlier filter on incoming point clouds.
+outlier_filter=1
+
+# Standard deviation threshold in distance to neighbors for outlier removal.
+outlier_std=1.0
+
+# Number of nearest neighbors for outlier removal filter.
+outlier_knn=5 #10
+
+# Apply a radius filter on incoming point clouds.
+radius_filter=0
+
+# Size of the radius outlier filter.
+radius=0.15
+
+# If this number of neighbors are not found within a radius of a point, remove
+# the point.
+radius_knn=3
+
+ 
+octree_resolution=0.05 # 0.05
+ 
+# Stop ICP if the transformation from the last iteration was this small.
+tf_epsilon=0.0000000001
+
+# During ICP, two points won't be considered a correspondence if they are at
+# least this far from one another.
+corr_dist=2.0
+
+# Iterate ICP this many times.
+iterations=10
+
+# Maximum acceptable incremental rotation and translation.
+transform_thresholding=0
+max_translation=0.09
+max_rotation=0.1
+  
+  
+  # Toggle loop closures on or off. Setting this to off will increase run-time
+# speed by a small fraction.
+check_for_loop_closures=1
+
+# Default parameters for the ISAM2 data structure.
+relinearize_skip=1
+relinearize_threshold=0.01
+
+# Amount of translational distance the sensor must travel before adding a new
+# pose to the pose graph. This helps keep the graph sparse so that loop closures
+# are fast.
+translation_threshold=0.5
+
+# When searching through old poses for loop closures, only consider old poses
+# that are within this distance of the current pose.
+proximity_threshold=1.5
+
+# To compute a loop closure we perform ICP between the current scan and laser
+# scans captured from nearby poses. In order to be considered a loop closure,
+# the ICP "fitness score" must be less than this number.
+max_tolerable_fitness=0.15
+
+# Don't attempt loop closures with poses in the graph that were collected within
+# the last 'skip_recent_poses' poses.
+skip_recent_poses=40
+
+# If a loop has recently been closed, don't close a new one for at least this
+# many poses (i.e. the sensor would have to move translation_threshold *
+# poses_before_reclosing meters in order to close a new loop).
+poses_before_reclosing=40
+
+#<!-- Initial pose -->
+position_x=0.0
+position_y=0.0
+position_z=0.0
+
+position_sigma_x=0.1
+position_sigma_y=0.1
+position_sigma_z=0.1
+
+orientation_roll=0.0
+orientation_pitch=0.0
+orientation_yaw=0.0
+
+orientation_sigma_roll=0.02
+orientation_sigma_pitch=0.02
+orientation_sigma_yaw=0.02
