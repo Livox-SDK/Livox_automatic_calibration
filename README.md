@@ -5,7 +5,7 @@
 This tool provides an automatic calibration method for external parameters estimate between multiple Livox LiDARs. 
 
 ![image](./pic/1.png)  
-<center>**Fig.1** Red: Base LiDAR mapping result, Green: Target LiDAR automatic calibration</center>
+<center> **Fig.1** Red: Base LiDAR mapping result, Green: Target LiDAR automatic calibration </center>
 
 ## Prerequisites
 Cmake, PCL1.7, Eigen
