@@ -27,9 +27,9 @@ make
 
 生成三个文件，分别是**mapping**, **calibration**, **fitline**　  
 
-* **mapping:**可视化建图工具　　
+* **mapping:** 可视化建图工具　　
 
-* **calibration:**可视化自动标定工具　　
+* **calibration:** 可视化自动标定工具　　
 
 * **fitline:**　拟合标定参数，计算最终参数矩阵　　
 
