@@ -2,8 +2,7 @@
 
 [中文文档](./doc/readme-CN.md)
 ## Introduction
-This tool provides an automatic calibration method for external parameters estimate between multiple Livox LiDARs. 
-In order to solve the calibration problem, Livox provides an automatic calibration tool. This technology mainly relies on the isomorphic constraint assumption model of the environment to realize automatic calibration, and only needs to use the original point cloud data of the base LiDAR and target LiDAR. Our tool first mapping the environment by using the Base LiDAR data. Then we uses the target LiDAR data to continuously iteratively register to the reconstructed map, relying on the constant assumption of rigidity of geometric structure to continuously reduce the matching error until the algorithm converges And meet the rigidity invariant characteristic of the calibration matrix (six parallel lines). Finally, a consensus algorithm is used to calculate the final calibration matrix.
+In order to solve the calibration problem, Livox provides an automatic calibration tool. This technology mainly relies on the isomorphic constraint assumption model of the environment to realize automatic calibration, and only needs to use the original point cloud data of the base LiDAR and target LiDAR. Our tool first mapping the environment by using the Base LiDAR data. Then we use the target LiDAR data to continuously iteratively register to the reconstructed map, relying on the constant assumption of the rigidity of geometric structure to continuously reduce the matching error until the algorithm converges And meets the rigidity invariant characteristic of the calibration matrix (six parallel lines). Finally, a consensus algorithm is used to calculate the final calibration matrix.
 
 ![image](./pic/1.png)  
     **Fig.1** Red: Base LiDAR mapping result, Green: Target LiDAR automatic calibration 
