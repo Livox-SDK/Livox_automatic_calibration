@@ -58,7 +58,7 @@ cd build
 sh run.sh
 
 ```
-脚本首先启动可视化建图程序**mapping**，用基准雷达建立子地图，建立完成后启动标定程序**calibration**，完成标定参数估计工作，最后启动
+脚本首先启动可视化建图程序**mapping**，用基准雷达建立子地图，自动生成待匹配地图数据H-LiDAR-Map-data.pcd文件。建立完成后启动标定程序**calibration**，完成标定参数估计工作，最后启动
 参数拟合器**fitline**，完成最终参数矩阵计算。
 
 ![image](../pic/output.png ) 
