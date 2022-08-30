@@ -10,7 +10,7 @@ add_definitions(${PCL_DEFINITIONS})
 
 include_directories(${PCL_INCLUDE_DIRS} include)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 FILE(GLOB SRCS0 src/mapping/*.cpp)
 FILE(GLOB SRCS1 src/calibration/*.cpp)
