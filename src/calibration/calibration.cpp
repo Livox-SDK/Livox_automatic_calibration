@@ -258,7 +258,10 @@ int main()
         cframe_count++;
 
         printProgress((double)cframe_count / (double)framenumbers);
-        viewer_final->updatePointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
+        //viewer_final->updatePointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
+        viewer_final->removePointCloud("match cloud");
+        viewer_final->addPointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
+        
         viewer_final->spinOnce(10);
 
         if (cframe_count == framenumbers)
