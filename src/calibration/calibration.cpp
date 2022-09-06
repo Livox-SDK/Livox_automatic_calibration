@@ -148,15 +148,14 @@ int main()
 
     //=================================
     //prepare display
-    boost::shared_ptr<pcl::visualization::PCLVisualizer>
-        viewer_final(new pcl::visualization::PCLVisualizer("3D Viewer"));
-    viewer_final->setBackgroundColor(0, 0, 0);
-    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> map_color(H_LiDAR_Map, 255, 0, 0);
-    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> match_color(H_LiDAR_Map, 0, 255, 0);
+    //boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_final(new pcl::visualization::PCLVisualizer("3D Viewer"));
+    //viewer_final->setBackgroundColor(0, 0, 0);
+    //pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> map_color(H_LiDAR_Map, 255, 0, 0);
+    //pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> match_color(H_LiDAR_Map, 0, 255, 0);
 
-    viewer_final->addPointCloud<pcl::PointXYZ>(H_LiDAR_Map, map_color, "target cloud");
-    viewer_final->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "target cloud");
-    viewer_final->addPointCloud<pcl::PointXYZ>(H_LiDAR_Map, match_color, "match cloud"); //display the match cloud
+    //viewer_final->addPointCloud<pcl::PointXYZ>(H_LiDAR_Map, map_color, "target cloud");
+    //viewer_final->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "target cloud");
+    //viewer_final->addPointCloud<pcl::PointXYZ>(H_LiDAR_Map, match_color, "match cloud"); //display the match cloud
 
     //=================================
     // prepare save matrix
@@ -169,9 +168,17 @@ int main()
     //=================================
     //              START
     //=================================
-    while (!viewer_final->wasStopped())
+    pcl::PointCloud<pcl::PointXYZ>::Ptr frames(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr trans_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr final_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_trans(new pcl::PointCloud<pcl::PointXYZ>);
+    cout<< "Start the long iterations...\n";
+              
+    //while (!viewer_final->wasStopped())
+    while(1)
     {
-        pcl::PointCloud<pcl::PointXYZ>::Ptr frames(new pcl::PointCloud<pcl::PointXYZ>);
+    	frames->clear();
+        //pcl::PointCloud<pcl::PointXYZ>::Ptr frames(new pcl::PointCloud<pcl::PointXYZ>);
         if (pcl::io::loadPCDFile<pcl::PointXYZ>(string(framesDir) + "/" + itos(frame_count) + ".pcd", *frames) == -1)
         {
             PCL_ERROR("Couldn't read H_LiDAR_Map \n");
@@ -190,8 +197,10 @@ int main()
 
         //================== Step.4 Start calibration =====================//
 
-        pcl::PointCloud<pcl::PointXYZ>::Ptr trans_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
-        pcl::PointCloud<pcl::PointXYZ>::Ptr final_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+        //pcl::PointCloud<pcl::PointXYZ>::Ptr trans_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+        //pcl::PointCloud<pcl::PointXYZ>::Ptr final_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+        trans_output_cloud->clear();
+        final_output_cloud->clear();
         pcl::transformPointCloud(*frames, *trans_output_cloud, init_guess); //Tiny_T * init_guess   ->update this matrix
         pcl::transformPointCloud(*trans_output_cloud, *final_output_cloud, T_Matrix);
 
@@ -216,7 +225,8 @@ int main()
 
         //====== Core step ======//
         
-        pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_trans(new pcl::PointCloud<pcl::PointXYZ>);
+        //pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_trans(new pcl::PointCloud<pcl::PointXYZ>);
+        neighbors_trans->clear();
         pcl::transformPointCloud(*neighbors_L, *neighbors_trans, T_Matrix_Inverse);
 
         //Do ICP and get the tiny trans T
@@ -258,11 +268,12 @@ int main()
         cframe_count++;
 
         printProgress((double)cframe_count / (double)framenumbers);
-        //viewer_final->updatePointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
-        viewer_final->removePointCloud("match cloud");
-        viewer_final->addPointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
         
-        viewer_final->spinOnce(10);
+        //viewer_final->updatePointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
+        //viewer_final->removePointCloud("match cloud");
+        //viewer_final->addPointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
+
+        //viewer_final->spinOnce(10);
 
         if (cframe_count == framenumbers)
         {
