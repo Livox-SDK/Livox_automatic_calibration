@@ -56,6 +56,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <pcl/filters/approximate_voxel_grid.h>
 #include <pcl/registration/gicp.h>
 
+#include <iostream>
+#include <ctime>
+#include <chrono>
+
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
@@ -63,6 +67,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <point_cloud_mapper/PointCloudMapper.h>
 
 using namespace std;
+
+using Time = std::chrono::steady_clock;
+using ms = std::chrono::milliseconds;
+using float_sec = std::chrono::duration<float>;
+using float_time_point = std::chrono::time_point<Time, float_sec>;
+
+float_time_point getCurrentTime() { return Time::now(); }
+
 namespace gu = geometry_utils;
 
 #define PI (3.1415926535897932346f)
@@ -172,11 +184,14 @@ int main()
     pcl::PointCloud<pcl::PointXYZ>::Ptr trans_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr final_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_trans(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_L(new pcl::PointCloud<pcl::PointXYZ>); //201 neighbors points from nap202
+
     cout<< "Start the long iterations...\n";
-              
+    
     //while (!viewer_final->wasStopped())
     while(1)
     {
+        float_time_point startTime000 = getCurrentTime();
     	frames->clear();
         //pcl::PointCloud<pcl::PointXYZ>::Ptr frames(new pcl::PointCloud<pcl::PointXYZ>);
         if (pcl::io::loadPCDFile<pcl::PointXYZ>(string(framesDir) + "/" + itos(frame_count) + ".pcd", *frames) == -1)
@@ -201,11 +216,21 @@ int main()
         //pcl::PointCloud<pcl::PointXYZ>::Ptr final_output_cloud(new pcl::PointCloud<pcl::PointXYZ>);
         trans_output_cloud->clear();
         final_output_cloud->clear();
+        float_time_point Time001 = getCurrentTime();
+
         pcl::transformPointCloud(*frames, *trans_output_cloud, init_guess); //Tiny_T * init_guess   ->update this matrix
         pcl::transformPointCloud(*trans_output_cloud, *final_output_cloud, T_Matrix);
 
-        pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_L(new pcl::PointCloud<pcl::PointXYZ>); //201 neighbors points from nap202
+        float_time_point Time002 = getCurrentTime();
+
+        //pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_L(new pcl::PointCloud<pcl::PointXYZ>); //201 neighbors points from nap202
+        neighbors_L->clear();
+        
         maps.ApproxNearestNeighbors(*final_output_cloud, neighbors_L.get());
+
+        float_time_point Time003 = getCurrentTime();
+
+        // cout << "Elapsed_nn(ms)=" << since(nn_start).count() << "\n";
 
         //INVERSE T_mat==============================
         
@@ -224,20 +249,33 @@ int main()
         T_Matrix_Inverse.block(0, 3, 3, 1) = T_Matrix_Inverse_T;
 
         //====== Core step ======//
+        float_time_point Time004 = getCurrentTime();
         
         //pcl::PointCloud<pcl::PointXYZ>::Ptr neighbors_trans(new pcl::PointCloud<pcl::PointXYZ>);
         neighbors_trans->clear();
         pcl::transformPointCloud(*neighbors_L, *neighbors_trans, T_Matrix_Inverse);
 
+        float_time_point Time005 = getCurrentTime();
+
         //Do ICP and get the tiny trans T
         icp.setInputSource(trans_output_cloud); //201
+        float_time_point Time0051 = getCurrentTime();
         icp.setInputTarget(neighbors_trans);    //202 (201's neighbor's point cloud)
+        float_time_point Time0052 = getCurrentTime();
         icp.align(*ICP_output_cloud);
+        float_time_point Time0053 = getCurrentTime();
         const Eigen::Matrix4f Tiny_T = icp.getFinalTransformation();
 
-        //std::cout << "Score: " << icp.getFitnessScore() << std::endl;
+        std::cout << "Score: " << icp.getFitnessScore() << std::endl;
+        float_time_point Time006 = getCurrentTime();
 
-        if (icp.getFitnessScore() > 1)
+        // std::cout << "Long times: " << ( Time0051 - Time005 ).count()*1000 << " "
+        //                             << ( Time0052 - Time0051 ).count()*1000 << " "
+        //                             << ( Time0053 - Time0052 ).count()*1000 << " "
+        //                             << ( Time006 - Time0053 ).count()*1000 << "\n";
+
+        if (icp.getFitnessScore() > 3 )
+        // if (icp.getFitnessScore() > 10 )
         {
             //std::cout<<"not match, skip this"<<std::endl;
             init_guess = init_guess_0;
@@ -260,8 +298,11 @@ int main()
             const Eigen::Matrix<double, 3, 1> EulerAngle_T = EulerAngle.Eigen();
             //std::cout<<"EulerAngle:  "<<EulerAngle_T(0,0)<<"  "<<EulerAngle_T(1,0)<<"  "<<EulerAngle_T(2,0)<<"  "<<std::endl;
 
-            if (icp.getFitnessScore() < 0.1)
+            // if (icp.getFitnessScore() < 0.1)
+            if (icp.getFitnessScore() < 1)
                 fout << frame_count - 100000 << " " << icp.getFitnessScore() << " " << Final_Calib_T(0, 3) << " " << Final_Calib_T(1, 3) << " " << Final_Calib_T(2, 3) << " " << EulerAngle_T(0, 0) << " " << EulerAngle_T(1, 0) << " " << EulerAngle_T(2, 0) << endl; //x,y,z,roll,pitch,yaw
+            
+            cout << frame_count - 100000 << " " << icp.getFitnessScore() << " " << Final_Calib_T(0, 3) << " " << Final_Calib_T(1, 3) << " " << Final_Calib_T(2, 3) << " " << EulerAngle_T(0, 0) << " " << EulerAngle_T(1, 0) << " " << EulerAngle_T(2, 0) << endl; //x,y,z,roll,pitch,yaw
         }
 
         frame_count++;
@@ -274,6 +315,18 @@ int main()
         //viewer_final->addPointCloud<pcl::PointXYZ>(final_output_cloud, match_color, "match cloud");
 
         //viewer_final->spinOnce(10);
+        
+        // cout << "Elapsed(ms)=" << since(start).count() << "\n";
+        float_time_point Time007 = getCurrentTime();
+
+        std::cout <<"Progress: "<< 100 * (double)cframe_count / (double)framenumbers
+                <<" %   Timea1234567: " << ( Time007 - startTime000 ).count()*1000 << " " 
+                                        << ( Time002 - Time001 ).count()*1000 <<" "                                      
+                                        << ( Time003 - Time002 ).count()*1000 <<" "  
+                                        << ( Time004 - Time003 ).count()*1000 <<" "  
+                                        << ( Time005 - Time004 ).count()*1000 <<" "  
+                                        << ( Time006 - Time005 ).count()*1000 <<" "
+                                        << ( Time007 - Time006 ).count()*1000 <<"\n";
 
         if (cframe_count == framenumbers)
         {
