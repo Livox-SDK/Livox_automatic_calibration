@@ -22,5 +22,5 @@ target_link_libraries (mapping ${PCL_LIBRARIES} ${LIBS})
 add_executable (calibration  ${SRCS1} )
 target_link_libraries (calibration ${PCL_LIBRARIES} ${LIBS})
 
-add_executable (fitline  ${SRCS2} )
-target_link_libraries (fitline ${PCL_LIBRARIES} ${LIBS})
+add_executable (ransac  ${SRCS2} )
+target_link_libraries (ransac ${PCL_LIBRARIES} ${LIBS})
