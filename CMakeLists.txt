@@ -10,7 +10,7 @@ add_definitions(${PCL_DEFINITIONS})
 
 include_directories(${PCL_INCLUDE_DIRS} include)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 FILE(GLOB SRCS0 src/mapping/*.cpp)
 FILE(GLOB SRCS1 src/calibration/*.cpp)
@@ -22,5 +22,5 @@ target_link_libraries (mapping ${PCL_LIBRARIES} ${LIBS})
 add_executable (calibration  ${SRCS1} )
 target_link_libraries (calibration ${PCL_LIBRARIES} ${LIBS})
 
-add_executable (fitline  ${SRCS2} )
-target_link_libraries (fitline ${PCL_LIBRARIES} ${LIBS})
+add_executable (ransac  ${SRCS2} )
+target_link_libraries (ransac ${PCL_LIBRARIES} ${LIBS})

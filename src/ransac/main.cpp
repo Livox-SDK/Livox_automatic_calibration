@@ -1,4 +1,4 @@
-#include "fitline.h"
+// #include "fitline.h"
 #include "ransac.h"
 #include <cstdlib>
 #include <cstdio>
@@ -24,6 +24,7 @@ int main()
 
         ifstream calib_FileA("../data/calib_data.txt");
         int filecount = 0;
+
         while (!calib_FileA.eof())
         {
                 calib_FileA >> id >> score >> x >> y >> z >> roll >> pitch >> yaw;
@@ -36,7 +37,11 @@ int main()
         ifstream calib_File("../data/calib_data.txt");
         int count = 0;
 
-        Point2D32f points_x[filecount];
+        // Point2D32f points_x[filecount];
+        vector<Point2D32f> points_x;
+        Point2D32f tmp; tmp.x=0;tmp.y=0;
+        for(int jj=0;jj<filecount ; jj++) points_x.push_back(tmp);
+
         Point2D32f points_y[filecount];
         Point2D32f points_z[filecount];
 
@@ -82,7 +87,13 @@ int main()
         pitch_0=pitch_0/filecount;
         yaw_0=yaw_0/filecount;
 
-     /*   float lines[4] = {0.0}; //line parameters
+///------------------------------------------
+
+        float* lines = new float[4];
+        lines[0] = 0.000000000001;
+        lines[1] = 0;
+        lines[2] = 0;
+        lines[3] = 0;
 
         int numForEstimate = 5;
         float successProbability = 0.9999f;
@@ -95,36 +106,38 @@ int main()
         printf("x ransac fit(including outliers): a: %f  x: %f\n", a, b);
         x = b;
 
-        Ransac(points_y, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
-        a = lines[1] / lines[0];
-        b = lines[3] - a * lines[2];
-        printf("y ransac fit(including outliers): a: %f  y: %f\n", a, b);
-        y = b;
+        // Ransac(points_y, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
+        // a = lines[1] / lines[0];
+        // b = lines[3] - a * lines[2];
+        // printf("y ransac fit(including outliers): a: %f  y: %f\n", a, b);
+        // y = b;
 
-        Ransac(points_z, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
-        a = lines[1] / lines[0];
-        b = lines[3] - a * lines[2];
-        printf("z ransac fit(including outliers): a: %f  z: %f\n", a, b);
-        z = b;
+        // Ransac(points_z, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
+        // a = lines[1] / lines[0];
+        // b = lines[3] - a * lines[2];
+        // printf("z ransac fit(including outliers): a: %f  z: %f\n", a, b);
+        // z = b;
 
-        Ransac(points_roll, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
-        a = lines[1] / lines[0];
-        b = lines[3] - a * lines[2];
-        printf("roll ransac fit(including outliers): a: %f  roll: %f\n", a, b);
-        roll = b;
+        // Ransac(points_roll, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
+        // a = lines[1] / lines[0];
+        // b = lines[3] - a * lines[2];
+        // printf("roll ransac fit(including outliers): a: %f  roll: %f\n", a, b);
+        // roll = b;
 
-        Ransac(points_pitch, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
-        a = lines[1] / lines[0];
-        b = lines[3] - a * lines[2];
-        printf("pitch ransac fit(including outliers): a: %f  pitch: %f\n", a, b);
-        pitch = b;
+        // Ransac(points_pitch, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
+        // a = lines[1] / lines[0];
+        // b = lines[3] - a * lines[2];
+        // printf("pitch ransac fit(including outliers): a: %f  pitch: %f\n", a, b);
+        // pitch = b;
 
-        Ransac(points_yaw, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
-        a = lines[1] / lines[0];
-        b = lines[3] - a * lines[2];
-        printf("yaw ransac fit(including outliers): a: %f  yaw: %f\n", a, b);
-        yaw = b;
-*/
+        // Ransac(points_yaw, filecount, lines, numForEstimate, successProbability, maxOutliersPercentage);
+        // a = lines[1] / lines[0];
+        // b = lines[3] - a * lines[2];
+        // printf("yaw ransac fit(including outliers): a: %f  yaw: %f\n", a, b);
+        // yaw = b;
+
+///------------------------------------------
+
         calib_File.close();
 
         cout << endl;

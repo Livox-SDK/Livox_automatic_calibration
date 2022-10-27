@@ -55,7 +55,7 @@ This operation will generate three files, namely **mapping**, **calibration**, *
 
 ### **2. run**
 ```
-cd livox_calibration
+cd Livox_automatic_calibration
 cp run.sh build/
 cd build
 sh run.sh
